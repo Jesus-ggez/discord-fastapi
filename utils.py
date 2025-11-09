@@ -1,1 +1,1 @@
-from pynacl
+from pynacl import ()
