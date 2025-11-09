@@ -1,19 +1,21 @@
 from typing import Optional
 
-type User = dict[str, str]
+
+type User = tuple[str, str, str]
 type UUID = str
 
 
 class UsersDb:
-    def append(self, user: User) -> Optional[UUID]:
+    def append(self, password: str, email: str, name: str) -> UUID:
         """
         # usage
         USER_DB: UsersDb = UsersDb()
 
-        if ( iden := USER_DB.append(my_user) ):
-            return {
-                'id': iden,
-            }
+        try:
+            return { 'id': USER_DB.append(**my_user) }
+
+        except Exception as e:
+            print(e)
         """
         ...
 

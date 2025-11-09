@@ -1,7 +1,13 @@
 from fastapi import APIRouter, FastAPI
 
 
+# ¿?
+from users_db import UsersDb
+
+
 from users import CreateUser
+
+USERS_DB: UsersDb = UsersDb()
 
 
 app: FastAPI = FastAPI()
@@ -11,7 +17,10 @@ users_router: APIRouter = APIRouter(
 )
 
 
-CreateUser(app=users_router).build()
+CreateUser(
+    app=users_router,
+    database=USERS_DB,
+).build()
 
 
 app.include_router(router=users_router)

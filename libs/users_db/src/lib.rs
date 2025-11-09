@@ -1,8 +1,8 @@
 use pyo3::prelude::*;
 
-mod init_sql;
+mod i_users;
+mod sql_conf;
 mod structs;
-mod users_i;
 
 use structs::UsersDb;
 

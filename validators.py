@@ -22,3 +22,5 @@ def is_valid_password(s: str) -> str:
         )
 
     return s
+
+

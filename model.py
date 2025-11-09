@@ -1,6 +1,12 @@
-from pydantic import BaseModel, StringConstraints
-from validators import is_valid_password
+from pydantic import (
+    StringConstraints,
+    BaseModel,
+    EmailStr,
+)
 from typing import Annotated
+
+
+from validators import is_valid_password
 
 
 # exists only here for use in this unique context
@@ -11,7 +17,6 @@ MIN_LEN_NAME: int = 3
 
 
 class User(BaseModel):
-    _encoded_password: str = ''
     name: Annotated[str, StringConstraints(
         max_length=MAX_LEN_NAME,
         min_length=MIN_LEN_NAME,
@@ -25,3 +30,7 @@ class User(BaseModel):
         strict=True,
     ), is_valid_password]
 
+    email: Annotated[str, StringConstraints(
+        strip_whitespace=True,
+        strict=True,
+    ), EmailStr]
