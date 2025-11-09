@@ -12,7 +12,11 @@ crate-type = [ "cdylib" ]
 pyo3 = { version = "0.24.1", features = [ "extension-module" ] }
 
 # postgresql
-sqlx = { version = "0.8", features = [ "runtime-tokio", "postgres" ] }
+#sqlx = { version = "0.8", features = [ "runtime-tokio", "postgres" ] }
+
+# sqlite
+sqlx = { version = "0.8", features = [ "runtime-tokio", "sqlite" ] }
+
 sea-query = "0.32.7"
 
 tokio = "1.48.0"
@@ -21,7 +25,6 @@ dotenvy = "0.15"
 
 [package-metadata.maturin]
 include-pyi = true
-
 
 [profile-release]
 target-cpu = "native"

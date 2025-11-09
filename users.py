@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 
 from sutil import EndPoint
+from model import User
 
 
 class CreateUser(EndPoint):
@@ -13,4 +14,6 @@ class CreateUser(EndPoint):
 
 
     def endpoint(self, user: User) -> dict: # type: ignore
-        ...
+
+
+        return user.model_dump()

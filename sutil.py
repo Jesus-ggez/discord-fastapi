@@ -1,10 +1,10 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from typing import Any
 
 
 class EndPoint:
     def __init__(self, app: APIRouter, route: str = '/', method: str = 'get') -> None:
-        self._method: str = method.upper()
+        self._method: str = method
         self._app: APIRouter = app
         self._route: str = route
         self._middlewares: list = []
@@ -15,12 +15,12 @@ class EndPoint:
         ...
 
 
-    def _subscribe(self) -> None:
+    def build(self) -> None:
         self._app.add_api_route(
             path=self._route,
             endpoint=self.endpoint,
-            methods=[self._method],
-            dependencies=self._middlewares,
+            methods=[self._method.upper()],
+            dependencies=[Depends(m) for m in self._middlewares],
         )
 
 

@@ -4,6 +4,7 @@ use dotenvy::dotenv;
 use sea_query::{ColumnDef, Iden, SqliteQueryBuilder, Table};
 use sqlx::{Connection, SqliteConnection};
 
+// pub const QUERY_ENGINE: SqliteQueryBuilder = SqliteQueryBuilder;
 pub const QUERY_ENGINE: SqliteQueryBuilder = SqliteQueryBuilder;
 
 #[derive(Iden)]

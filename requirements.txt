@@ -1,2 +1,4 @@
 fastapi==118.0.0
+maturin==1.9.6
 pynacl==0.15.0
+uvicorn==0.38.0
