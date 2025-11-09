@@ -9,7 +9,7 @@ crate-type = [ "cdylib" ]
 
 
 [dependencies]
-pyo3 = { version = "0.24.1", features = [ "extension-module" ] }
+pyo3 = { version = "0.24.1", features = [ "extension-module",] } # "multiple-pymethods" ] }
 
 # postgresql
 #sqlx = { version = "0.8", features = [ "runtime-tokio", "postgres" ] }

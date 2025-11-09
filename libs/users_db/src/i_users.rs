@@ -1,5 +1,4 @@
 use pyo3::exceptions::PyValueError;
-// dependences
 use pyo3::prelude::*;
 use sea_query::Query;
 use tokio::runtime::Runtime;
@@ -11,7 +10,7 @@ use crate::structs::UsersDb;
 
 #[pymethods]
 impl UsersDb {
-    #[new]
+    #[new] // separe in future
     fn new() -> PyResult<Self> {
         let rt: Runtime = Runtime::new().map_err(|e| PyValueError::new_err(e.to_string()))?;
         let pool: PoolEngine = rt
@@ -26,7 +25,11 @@ impl UsersDb {
         })
     }
 
+    /// py signature:
+    /// # type UUID = str
+    /// def append(self, password: str, email: str, name: str) -> UUID: ...
     fn append(&self, password: String, email: String, name: String) -> PyResult<String> {
+        // separe and use `self.sync.block_on(append(...)) in future to ez testing`
         let last_id: String = Uuid::new_v4().to_string();
 
         let sql: String = Query::insert()
