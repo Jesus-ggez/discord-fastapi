@@ -7,9 +7,14 @@ from fastapi import (
 
 
 # ¿?
+# if i use sqlmodel this api is terminated in a few ours xd
+# but the idea is show habilities using multiple langs and
+# real use cases for aggressive optimizations
 from users_db import UsersDb
 
 
+# this is a simple POO handler, more security to be used
+# in a strict private context
 from src.sutil import EndPoint
 from src.model import User
 
@@ -34,7 +39,7 @@ class CreateUser(EndPoint):
             }
 
         except Exception as e:
-            # logging using e
+            # logging using e as message or whatever
 
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
