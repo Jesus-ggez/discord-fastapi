@@ -6,7 +6,7 @@ from pydantic import (
 from typing import Annotated
 
 
-from validators import is_valid_password
+from .validators import is_valid_password
 
 
 # exists only here for use in this unique context

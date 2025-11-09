@@ -1,8 +1,10 @@
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI
+
 from slowapi.middleware import SlowAPIASGIMiddleware
 from slowapi.util import get_remote_address
 from slowapi import Limiter
-
-from fastapi import FastAPI
 
 
 def create_rate_limiting(app: FastAPI) -> None:
@@ -12,11 +14,6 @@ def create_rate_limiting(app: FastAPI) -> None:
 
     app.state.limiter = LIMITER
     app.add_middleware(SlowAPIASGIMiddleware)
-
-
-
-from fastapi.middleware.trustedhost import TrustedHostMiddleware
-from fastapi.middleware.cors import CORSMiddleware
 
 
 def create_basic_middlewares(app: FastAPI) -> None:
@@ -35,4 +32,9 @@ def create_basic_middlewares(app: FastAPI) -> None:
 
 
 def create_id_request() -> None:
-    ...
+    raise NotImplementedError(
+        '- create a request iden',
+        '- save iden in db',
+        '- create header in request `req-id` or similar',
+        '- return request',
+    )

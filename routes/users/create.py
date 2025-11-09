@@ -10,8 +10,8 @@ from fastapi import (
 from users_db import UsersDb
 
 
-from sutil import EndPoint
-from model import User
+from src.sutil import EndPoint
+from src.model import User
 
 
 class CreateUser(EndPoint):
