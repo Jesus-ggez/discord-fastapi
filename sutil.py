@@ -3,7 +3,12 @@ from typing import Any
 
 
 class EndPoint:
-    def __init__(self, app: APIRouter, route: str = '/', method: str = 'get') -> None:
+    def __init__(
+        self,
+        app: APIRouter,
+        method: str = 'get',
+        route: str = '/',
+    ) -> None:
         self._method: str = method
         self._app: APIRouter = app
         self._route: str = route

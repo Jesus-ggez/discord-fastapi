@@ -1,5 +1,9 @@
-from fastapi import APIRouter, HTTPException
 from nacl import pwhash
+from fastapi import (
+    HTTPException,
+    APIRouter,
+    status,
+)
 
 
 # ¿?
@@ -20,20 +24,24 @@ class CreateUser(EndPoint):
 
 
     def endpoint(self, user: User) -> dict: # type: ignore
-
         try:
-            user_db: dict = user.model_dump()
-            user_db['password'] = pwhash.str(user_db['password'].encode()).hex()
-
             return {
                 'iden': self.__database.append(
-                    **user_db,
+                    **self.create_secure_user(
+                        user=user.model_dump()
+                    )
                 )
             }
 
         except Exception as e:
-            print(e)
+            # logging using e
+
             raise HTTPException(
-                status_code=404,
+                status_code=status.HTTP_400_BAD_REQUEST,
                 detail='User already exists',
             )
+
+
+    def create_secure_user(self, user: dict) -> dict:
+        user['password'] = pwhash.str(user['password'].encode()).hex()
+        return user

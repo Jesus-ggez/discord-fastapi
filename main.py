@@ -6,23 +6,32 @@ from users_db import UsersDb
 
 
 from users import CreateUser
-
-USERS_DB: UsersDb = UsersDb()
+from middlewares import (
+    create_basic_middlewares,
+    create_rate_limiting,
+)
 
 
 app: FastAPI = FastAPI()
 
+# security
+create_basic_middlewares(app=app)
+create_rate_limiting(app=app)
+
+
+# separe and use in `routes/users/__init__.py` using unique router
+# begin users/__init__.py
+USERS_DB: UsersDb = UsersDb()
 users_router: APIRouter = APIRouter(
     prefix='/users'
 )
-
 
 CreateUser(
     app=users_router,
     database=USERS_DB,
 ).build()
 
-
+# end users/__init__.py
 app.include_router(router=users_router)
 
 
