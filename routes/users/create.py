@@ -20,7 +20,7 @@ from src.utils import (
 )
 
 
-class CreateUser(EndPoint):
+class Creator(EndPoint):
     def __init__(
         self,
         database: UsersDb,
@@ -55,7 +55,7 @@ class CreateUser(EndPoint):
         iden_res: Result[str, str] = self.__create_record(hashed_user.value)
 
         if iden_res.is_err():
-            self.__logger.info(
+            self.__logger.warning(
                 'pyo3-maturin || sqlx-sea_query panic:  %s',
                 hashed_user.error,
             )
@@ -87,3 +87,7 @@ class CreateUser(EndPoint):
     @safe_exec
     def __create_record(self, data: dict) -> Any:
         return self.__database.append(**data)
+
+
+
+

@@ -7,6 +7,7 @@ from routes.users import users_router
 from src.middlewares import (
     create_basic_middlewares,
     create_rate_limiting,
+    create_id_request,
 )
 
 
@@ -18,6 +19,7 @@ app: FastAPI = FastAPI()
 if not env_vars.get('test'):
     create_basic_middlewares(app=app)
     create_rate_limiting(app=app)
+    create_id_request(app=app)
 
 
 app.include_router(router=users_router)

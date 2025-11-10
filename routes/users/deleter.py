@@ -12,8 +12,7 @@ from fastapi import (
 from users_db import UsersDb
 
 
-from src.middlewares.traceback_mw import get_reqwest_id
-from src.model import User
+from middlewares.traceback_mw import get_reqwest_id
 from src.utils import (
     safe_exec,
     EndPoint,
@@ -21,7 +20,7 @@ from src.utils import (
 )
 
 
-class Reader(EndPoint):
+class Deleter(EndPoint):
     def __init__(
         self,
         database: UsersDb,
@@ -32,43 +31,41 @@ class Reader(EndPoint):
         self.__logger: Logger = logger
 
         super().__init__(
-            method='get',
+            method='post',
             app=app,
         )
 
 
-    def endpoint(self, iden: str, req_iden: str = Depends(get_reqwest_id)) -> User: # type: ignore
-        user: Result = self.__get_record(iden=iden)
+    def endpoint(self, iden: str, req_iden: str = Depends(get_reqwest_id)) -> dict: # type: ignore
+        # the iden comes from the implementation your prefer
+        removed: Result = self.__remove_record(iden=iden)
 
-        if user.is_err():
+        if removed.is_err():
             self.__logger.warning(
                 'pyo3-maturin || sqlx-sea_query panic:  %s',
-                user.error,
+                removed.error,
             )
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail='Internal Server Error',
             )
 
-        if user.value is None:
-            self.__logger.info(
+        if removed.value is None:
+            self.__logger.warning(
                 'suspicious entry, value: %s, req_iden: %s',
                 iden,
                 req_iden,
             )
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail='User not found',
+                detail='User not exists',
             )
 
-        data: tuple = user.value
-        return User(
-            password=data[0],
-            email=data[1],
-            name=data[2],
-        )
+        return {
+            'message': f'User with iden: {iden} has deleted successfully',
+        }
 
 
     @safe_exec
-    def __get_record(self, iden: str) -> Any:
-        return self.__database.get_by_id(iden=iden)
+    def __remove_record(self, iden: str) -> Any:
+        return self.__database.discard(iden=iden)
