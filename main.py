@@ -1,7 +1,6 @@
+from os import environ as env_vars
 from dotenv import load_dotenv
 from fastapi import FastAPI
-
-import os
 
 
 from routes.users import users_router
@@ -16,7 +15,7 @@ app: FastAPI = FastAPI()
 
 
 # security
-if not os.environ.get('test', ''):
+if not env_vars.get('test'):
     create_basic_middlewares(app=app)
     create_rate_limiting(app=app)
 

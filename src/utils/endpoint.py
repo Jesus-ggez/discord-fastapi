@@ -12,6 +12,7 @@ class EndPoint:
         self._method: str = method
         self._app: APIRouter = app
         self._route: str = route
+
         self._middlewares: list = []
 
 
@@ -31,3 +32,4 @@ class EndPoint:
 
     def add_middleware(self, items: list) -> None:
         self._middlewares.extend(items)
+

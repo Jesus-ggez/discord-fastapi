@@ -1,9 +1,9 @@
+from typing import Annotated
 from pydantic import (
     StringConstraints,
     BaseModel,
     EmailStr,
 )
-from typing import Annotated
 
 
 from .validators import is_valid_password
