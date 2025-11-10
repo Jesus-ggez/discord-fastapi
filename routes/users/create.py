@@ -52,12 +52,12 @@ class Creator(EndPoint):
                 detail='Invalid Password',
             )
 
-        iden_res: Result[str, str] = self.__create_record(hashed_user.value)
+        iden_res: Result = self.__create_record(hashed_user.value)
 
         if iden_res.is_err():
             self.__logger.warning(
                 'pyo3-maturin || sqlx-sea_query panic:  %s',
-                hashed_user.error,
+                iden_res.error,
             )
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -87,7 +87,5 @@ class Creator(EndPoint):
     @safe_exec
     def __create_record(self, data: dict) -> Any:
         return self.__database.append(**data)
-
-
 
 

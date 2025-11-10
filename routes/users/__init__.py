@@ -19,6 +19,7 @@ users_router: APIRouter = APIRouter(
     prefix='/users',
 )
 
+
 creator: Creator = Creator(
     database=USERS_DB,
     app=users_router,
@@ -39,6 +40,7 @@ modifier: Modifier = Modifier(
     logger=logger,
 )
 modifier.build()
+
 deleter: Deleter = Deleter(
     database=USERS_DB,
     app=users_router,

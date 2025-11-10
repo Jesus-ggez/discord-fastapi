@@ -1,57 +1,63 @@
-use pyo3::exceptions::PyValueError;
-use pyo3::prelude::*;
-use sea_query::Query;
+use pyo3::{exceptions::PyValueError, prelude::*};
 use tokio::runtime::Runtime;
-use uuid::Uuid;
 
-// local imports
-use crate::sql_conf::{get_pool, init_database, PoolEngine, UsersTable, QUERY_ENGINE};
-use crate::structs::UsersDb;
+use crate::{
+    basic_sql::init_database_or_exit,
+    constants::{get_pool, PoolEngine, Record},
+    structs::UsersDb,
+};
 
 #[pymethods]
 impl UsersDb {
-    #[new] // separe in future
+    #[new]
     fn new() -> PyResult<Self> {
-        let rt: Runtime = Runtime::new().map_err(|e| PyValueError::new_err(e.to_string()))?;
-        let pool: PoolEngine = rt
-            .block_on(get_pool())
-            .map_err(|e| PyValueError::new_err(e.to_string()))?;
+        let runtime: Runtime =
+            Runtime::new().map_err(|err| PyValueError::new_err(err.to_string()))?;
 
-        rt.block_on(init_database(&pool));
+        let pool: PoolEngine = runtime
+            .block_on(get_pool())
+            .map_err(|err| PyValueError::new_err(err.to_string()))?;
+
+        runtime.block_on(init_database_or_exit(&pool));
 
         Ok(UsersDb {
+            rt_sync: runtime,
             pool: pool,
-            sync: rt,
         })
     }
+    /*
+    type User = tuple[str, str, str]
+    type UUID = str
 
-    /// py signature:
-    /// # type UUID = str
-    /// def append(self, password: str, email: str, name: str) -> UUID: ...
-    fn append(&self, password: String, email: String, name: String) -> PyResult<String> {
-        // separe and use `self.sync.block_on(append(...)) in future to ez testing`
-        let last_id: String = Uuid::new_v4().to_string();
 
-        let sql: String = Query::insert()
-            .into_table(UsersTable::Table)
-            .columns([
-                UsersTable::Id,
-                UsersTable::Password,
-                UsersTable::Email,
-                UsersTable::Name,
-            ])
-            .values_panic([
-                last_id.clone().into(),
-                password.into(),
-                email.into(),
-                name.into(),
-            ])
-            .to_string(QUERY_ENGINE);
+    class UsersDb:
+        def append(self, password: str, email: str, name: str) -> Optional[UUID]: ...
 
-        self.sync
-            .block_on(sqlx::query(&sql).execute(&self.pool))
-            .map_err(|e| PyValueError::new_err(e.to_string()))?;
+        def discard(self, target: str) -> Optional[UUID]: ...
 
-        Ok(last_id)
+        def get(self, target: str) -> Optional[User]: ...
+
+        def set(self, target: str, data: dict) -> None: ...
+
+    */
+    pub fn append(
+        &self,
+        password: String,
+        email: String,
+        name: String,
+    ) -> PyResult<Option<String>> {
+        todo!()
+    }
+
+    pub fn discard(&self, target: String) -> PyResult<Option<String>> {
+        todo!()
+    }
+
+    pub fn get(&self, target: String) -> PyResult<Option<String>> {
+        todo!()
+    }
+
+    pub fn set(&self, target: String, data: Record) -> PyResult<()> {
+        todo!()
     }
 }

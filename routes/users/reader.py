@@ -71,4 +71,4 @@ class Reader(EndPoint):
 
     @safe_exec
     def __get_record(self, iden: str) -> Any:
-        return self.__database.get_by_id(iden=iden)
+        return self.__database.get(target=iden)

@@ -12,7 +12,7 @@ from fastapi import (
 from users_db import UsersDb
 
 
-from middlewares.traceback_mw import get_reqwest_id
+from src.middlewares.traceback_mw import get_reqwest_id
 from src.utils import (
     safe_exec,
     EndPoint,
@@ -31,12 +31,16 @@ class Deleter(EndPoint):
         self.__logger: Logger = logger
 
         super().__init__(
-            method='post',
+            method='delete',
             app=app,
         )
 
 
-    def endpoint(self, iden: str, req_iden: str = Depends(get_reqwest_id)) -> dict: # type: ignore
+    def endpoint( # type: ignore
+        self,
+        iden: str,
+        req_iden: str = Depends(get_reqwest_id)
+    ) -> dict:
         # the iden comes from the implementation your prefer
         removed: Result = self.__remove_record(iden=iden)
 
@@ -68,4 +72,4 @@ class Deleter(EndPoint):
 
     @safe_exec
     def __remove_record(self, iden: str) -> Any:
-        return self.__database.discard(iden=iden)
+        return self.__database.discard(target=iden)
