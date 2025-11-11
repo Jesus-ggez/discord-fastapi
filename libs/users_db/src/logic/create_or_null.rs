@@ -17,6 +17,8 @@ pub async fn create_or_null(data: Record, pool: &PoolEngine) -> sqlx::Result<Opt
         ])
         .to_string(QUERY_ENGINE);
 
+    dbg!(sql.clone());
+
     sqlx::query(&sql).execute(pool).await?;
 
     return Ok(Some(iden));

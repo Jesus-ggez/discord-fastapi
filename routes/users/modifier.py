@@ -113,5 +113,9 @@ class Modifier(EndPoint):
     def __update_record(self, data: dict, iden: str) -> Any:
         return self.__database.set(
             target=iden,
-            data=data,
+            data=(
+                data['email'],
+                data['name'],
+                data['password'],
+            ),
         )

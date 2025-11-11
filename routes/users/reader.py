@@ -37,7 +37,7 @@ class Reader(EndPoint):
         )
 
 
-    def endpoint(self, iden: str, req_iden: str = Depends(get_reqwest_id)) -> User: # type: ignore
+    def endpoint(self, iden: str, req_iden: str = Depends(get_reqwest_id)) -> dict: # type: ignore
         user: Result = self.__get_record(iden=iden)
 
         if user.is_err():
@@ -62,11 +62,11 @@ class Reader(EndPoint):
             )
 
         data: tuple = user.value
-        return User(
-            password=data[0],
-            email=data[1],
-            name=data[2],
-        )
+        return {
+            'id': iden,
+            'email': data[0],
+            'name': data[1],
+        }
 
 
     @safe_exec
