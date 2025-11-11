@@ -2,7 +2,7 @@ use sea_query::{ColumnDef, Expr, Table};
 
 use crate::constants::{PoolEngine, QUERY_ENGINE};
 
-mod sea_query_utils {
+pub mod sea_query_utils {
     use sea_query::Iden;
 
     #[derive(Iden)]
